@@ -1,0 +1,18 @@
+---
+version: "2"
+services:
+  nextcloud:
+    image: linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /mnt/path/to/Nextcloud/Config:/config
+      - /mnt/path/to/Nextcloud/Data:/data
+    ports:
+      - 8080:443
+    restart: unless-stopped
+
+# MariaDB is created standalone, which worked better for me
