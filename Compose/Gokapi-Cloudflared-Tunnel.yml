@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  gokapi:
+    container_name: Gokapi-Cloudflared
+    image: f0rc3/gokapi:latest
+    ports:
+      - 53842:53842
+    environment:
+      - GOKAPI_USERNAME='username'
+      - GOKAPI_PASSWORD='password'
+      - GOKAPI_PORT=53842
+      - GOKAPI_EXTERNAL_URL=https://subdomain.domain.de
+      - GOKAPI_REDIRECT_URL=https://github.com/Ali333n
+      - GOKAPI_LOCALHOST=no
+      - GOKAPI_USE_SSL=no
+    volumes:
+      - '/docker/gokapi/conf:/app/config'
+      - '/docker/gokapi/data:/app/data'
+    restart: always
+
+  tunnel:
+    container_name: Gokapi-Cloudflared-Tunnel
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=mytokengoeshere
+
+networks:
+  default:
+    name: Gokapi
