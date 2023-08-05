@@ -20,12 +20,12 @@ services:
     volumes:
       - '/docker/gokapi/conf:/app/config'
       - '/docker/gokapi/data:/app/data'
-    restart: always
+    restart: unless-stopped
 
   tunnel:
     container_name: Gokapi-Cloudflared-Tunnel
     image: cloudflare/cloudflared:latest
-    restart: always
+    restart: unless-stopped
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=mytokengoeshere
