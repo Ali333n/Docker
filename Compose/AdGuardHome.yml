@@ -1,3 +1,6 @@
+# Changed Config because of an UDP-Buffer Error, could be resolved within the Github Ticket:
+# https://github.com/AdguardTeam/AdGuardHome/issues/5903
+
 version: "2"
 services:
   adguardhome:
