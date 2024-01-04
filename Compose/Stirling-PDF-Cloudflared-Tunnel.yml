@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  stirling-pdf:
+    container_name: Stirling-PDF
+    image: frooodle/s-pdf:latest
+    ports:
+      - '8080:8080'
+    volumes:
+      - /location/of/trainingData:/usr/share/tesseract-ocr/5/tessdata #Required for extra OCR languages
+      - /location/of/extraConfigs:/configs
+      - /location/of/customFiles:/customFiles/
+      - /location/of/logs:/logs/
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - SYSTEM_DEFAULTLOCALE='de_DE'
+      - DOCKER_ENABLE_SECURITY=true
+      - SECURITY_ENABLE_LOGIN=true
+
+  tunnel:
+    container_name: Stirling-PDF-Cloudflared-Tunnel
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=mytokengoeshere
+
+networks:
+  default:
+    name: Stirling-PDF
