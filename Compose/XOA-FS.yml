@@ -48,3 +48,6 @@ services:
           - "/dev/loop-control:/dev/loop-control"
           - "/dev/loop0:/dev/loop0"
 
+volumes:
+  xo-data:
+  redis-data:
