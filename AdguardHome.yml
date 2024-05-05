@@ -1,0 +1,49 @@
+# Links
+# https://labzilla.io/blog/adguard-dns-over-https
+# https://certbot-dns-cloudflare.readthedocs.io/en/stable/
+# https://certbot.eff.org/instructions?ws=other&os=debiantesting&tab=wildcard
+
+# Cloudflare API Token
+touch cloudflare.ini
+
+dns_cloudflare_api_token = $token
+
+# Command for initial Certificate
+certbot certonly --dns-cloudflare --dns-cloudflare-credentials /home/$user/certbot/cloudflare.ini -d adguard.test.de
+
+# Docker Container Creation Process, Import Certs and activate SSL
+docker run --name adguardhome \
+-v /home/$user/docker/adguardhome/work:/opt/adguardhome/work \
+-v /home/$user/docker/adguardhome/conf:/opt/adguardhome/conf \
+-v /etc/letsencrypt/live/adguard.test.de/fullchain.pem:/etc/letsencrypt/live/adguard.test.de/fullchain.pem \
+-v /etc/letsencrypt/live/adguard.test.de/privkey.pem:/etc/letsencrypt/live/adguard.test.de/privkey.pem \
+-p 3000:3000/tcp \
+-p 443:443/tcp \
+-p 80:80/tcp \
+-d --restart unless-stopped \
+adguard/adguardhome
+
+# Now Stop the Container above and Start it as below with or without Healthcheck
+docker run --name adguardhome \
+-v /home/$user/docker/adguardhome/work:/opt/adguardhome/work \
+-v /home/$user/docker/adguardhome/conf:/opt/adguardhome/conf \
+-v /etc/letsencrypt/live/adguard.test.de/fullchain.pem:/etc/letsencrypt/live/adguard.test.de/fullchain.pem \
+-v /etc/letsencrypt/live/adguard.test.de/privkey.pem:/etc/letsencrypt/live/adguard.test.de/privkey.pem \
+-p 443:443/tcp \
+-d --restart unless-stopped \
+adguard/adguardhome
+
+# Recommended with Healthcheck
+docker run --name AdguardHome \
+-v /home/$user/docker/adguardhome/work:/opt/adguardhome/work \
+-v /home/$user/docker/adguardhome/conf:/opt/adguardhome/conf \
+-v /etc/letsencrypt/live/adguard.test.de/fullchain.pem:/etc/letsencrypt/live/adguard.test.de/fullchain.pem \
+-v /etc/letsencrypt/live/adguard.test.de/privkey.pem:/etc/letsencrypt/live/adguard.test.de/privkey.pem \
+-p 443:443/tcp \
+-d --restart unless-stopped \
+--health-cmd="nslookup www.google.com || exit 1" \
+--health-interval=60s \
+--health-timeout=5s \
+--health-retries=1 \
+--health-start-period=10s \
+adguard/adguardhome
