@@ -4,7 +4,7 @@ services:
     image: mysql:8.0
     hostname: mysql
     volumes:
-      - '/home/sven/docker/semaphore/mysql:/var/lib/mysql'
+      - '/home/X/docker/semaphore/mysql:/var/lib/mysql'
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: semaphore
