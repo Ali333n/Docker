@@ -1,14 +1,15 @@
 services:
-  postgres:
+  mysql:
     restart: unless-stopped
-    image: postgres:14
-    hostname: postgres-sema
-    volumes: 
-      - '/home/X/docker/semaphore/postgres:/var/lib/postgresql/data'
+    image: mysql:8.0
+    hostname: mysql
+    volumes:
+      - '/home/sven/docker/semaphore/mysql:/var/lib/mysql'
     environment:
-      POSTGRES_USER: semaphore
-      POSTGRES_PASSWORD: 'X'
-      POSTGRES_DB: semaphore
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: semaphore
+      MYSQL_USER: semaphore
+      MYSQL_PASSWORD: 'X'
   semaphore:
     restart: unless-stopped
     ports:
@@ -17,9 +18,9 @@ services:
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: 'X'
-      SEMAPHORE_DB_HOST: postgres-sema:5432
+      SEMAPHORE_DB_HOST: mysql:3306
       SEMAPHORE_DB_PORT: 3306
-      SEMAPHORE_DB_DIALECT: postgres
+      SEMAPHORE_DB_DIALECT: mysql
       SEMAPHORE_DB: semaphore
       SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
       SEMAPHORE_ADMIN_PASSWORD: 'X'
@@ -33,5 +34,5 @@ services:
       - '/home/X/docker/semaphore/config:/etc/semaphore'
       - '/home/X/docker/semaphore/temp:/tmp/semaphore'
     depends_on:
-      - postgres
-    user: "1000:1000"
+      - mysql
+    user: "root:root"
