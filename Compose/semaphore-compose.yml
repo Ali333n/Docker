@@ -1,3 +1,5 @@
+# https://docs.semaphoreui.com/administration-guide/installation/docker/
+
 services:
   mysql:
     restart: unless-stopped
