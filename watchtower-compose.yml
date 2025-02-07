@@ -1,0 +1,15 @@
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    hostname: 
+    restart: always
+    environment:
+      - TZ=Europe/Berlin
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_REVIVE_STOPPED=true
+      - WATCHTOWER_POLL_INTERVAL=3600 #Set Poll Interval
+      - WATCHTOWER_NOTIFICATION_URL=discord:// #discord Webhook URL
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
