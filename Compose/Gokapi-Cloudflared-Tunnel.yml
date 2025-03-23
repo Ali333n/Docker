@@ -19,8 +19,8 @@ services:
       - GOKAPI_LOCALHOST=no
       - GOKAPI_USE_SSL=no
     volumes:
-      - '/docker/gokapi/conf:/app/config'
-      - '/docker/gokapi/data:/app/data'
+      - ./gokapi/conf:/app/config
+      - ./gokapi/data:/app/data
     restart: unless-stopped
 
   tunnel:

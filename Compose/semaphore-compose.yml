@@ -6,12 +6,12 @@ services:
     image: mysql:8.0
     hostname: mysql
     volumes:
-      - '/home/X/docker/semaphore/mysql:/var/lib/mysql'
+      - ./semaphore/mysql:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_DATABASE: semaphore
-      MYSQL_USER: semaphore
-      MYSQL_PASSWORD: 'X'
+      MYSQL_DATABASE: ${DB_Name}
+      MYSQL_USER: ${DB_User}
+      MYSQL_PASSWORD: ${DB_Pass}
   semaphore:
     restart: unless-stopped
     ports:
@@ -19,22 +19,24 @@ services:
     image: semaphoreui/semaphore:latest
     environment:
       SEMAPHORE_DB_USER: semaphore
-      SEMAPHORE_DB_PASS: 'X'
+      SEMAPHORE_DB_PASS: ${DB_Pass}
       SEMAPHORE_DB_HOST: mysql:3306
       SEMAPHORE_DB_PORT: 3306
       SEMAPHORE_DB_DIALECT: mysql
-      SEMAPHORE_DB: semaphore
+      SEMAPHORE_DB: ${DB_Name}
       SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
-      SEMAPHORE_ADMIN_PASSWORD: 'X'
-      SEMAPHORE_ADMIN_NAME: "X"
-      SEMAPHORE_ADMIN_EMAIL: X
-      SEMAPHORE_ADMIN: X
-      SEMAPHORE_ACCESS_KEY_ENCRYPTION: X
+      SEMAPHORE_ADMIN_PASSWORD: ${Admin_Pass}
+      SEMAPHORE_ADMIN_NAME: ${Admin_Name}
+      SEMAPHORE_ADMIN_EMAIL: ${Admin_Mail}
+      SEMAPHORE_ADMIN: §{Admin_Name}
+      SEMAPHORE_COOKIE_HASH: ${Cookie_Hash}
+      SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption}
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}
       TZ: Europe/Berlin
     volumes:
-      - '/home/X/docker/semaphore/data:/var/lib/semaphore'
-      - '/home/X/docker/semaphore/config:/etc/semaphore'
-      - '/home/X/docker/semaphore/temp:/tmp/semaphore'
+      - ./semaphore/data:/var/lib/semaphore
+      - ./semaphore/config:/etc/semaphore
+      - ./semaphore/temp:/tmp/semaphore
     depends_on:
       - mysql
-    user: "root:root"
+
