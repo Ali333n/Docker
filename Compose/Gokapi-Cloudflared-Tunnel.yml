@@ -11,8 +11,8 @@ services:
     ports:
       - 53842:53842
     environment:
-      - GOKAPI_USERNAME='username'
-      - GOKAPI_PASSWORD='password'
+      - GOKAPI_USERNAME=${gokapi_username}
+      - GOKAPI_PASSWORD=${gokapi_password}
       - GOKAPI_PORT=53842
       - GOKAPI_EXTERNAL_URL=https://subdomain.domain.de
       - GOKAPI_REDIRECT_URL=https://github.com/Ali333n
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
     command: tunnel run
     environment:
-      - TUNNEL_TOKEN=mytokengoeshere
+      - TUNNEL_TOKEN=${tunnel_token}
 
 networks:
   default:
