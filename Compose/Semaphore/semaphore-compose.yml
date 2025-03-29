@@ -29,9 +29,9 @@ services:
       SEMAPHORE_ADMIN_NAME: ${Admin_Name}
       SEMAPHORE_ADMIN_EMAIL: ${Admin_Mail}
       SEMAPHORE_ADMIN: §{Admin_Name}
-      SEMAPHORE_COOKIE_HASH: ${Cookie_Hash}
-      SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption}
-      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}
+      SEMAPHORE_COOKIE_HASH: ${Cookie_Hash}                       # head -c32 /dev/urandom | base64
+      SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption}           # head -c32 /dev/urandom | base64
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}              # head -c32 /dev/urandom | base64
       TZ: Europe/Berlin
     volumes:
       - ./semaphore/data:/var/lib/semaphore

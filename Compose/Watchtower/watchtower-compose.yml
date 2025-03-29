@@ -11,7 +11,7 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_REVIVE_STOPPED=true
       - WATCHTOWER_POLL_INTERVAL=3600 #Set Poll Interval
-      - WATCHTOWER_NOTIFICATION_URL= ${Discord_WebhookURL} #discord Webhook URL
+      - WATCHTOWER_NOTIFICATION_URL= ${webhook_url} #discord Webhook URL
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
