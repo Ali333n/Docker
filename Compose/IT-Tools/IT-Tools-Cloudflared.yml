@@ -1,0 +1,19 @@
+services:
+    it-tools:
+        image: corentinth/it-tools:latest 
+        container_name: IT-Tools-Cloudflared
+        restart: unless-stopped
+        ports:
+            - '8080:80'
+
+    tunnel:
+      container_name: IT-Tools-Cloudflared-Tunnel
+      image: cloudflare/cloudflared:latest
+      restart: unless-stopped
+      command: tunnel run
+      environment:
+        - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+
+networks:
+  default:
+    name: IT-Tools
