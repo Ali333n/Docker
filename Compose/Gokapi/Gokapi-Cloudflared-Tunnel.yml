@@ -6,10 +6,11 @@
 
 services:
   gokapi:
-    container_name: Gokapi-Cloudflared
     image: f0rc3/gokapi:latest
-    ports:
-      - 53842:53842
+    container_name: Gokapi-Cloudflared
+    restart: unless-stopped
+    expose:
+     - '53842'
     environment:
       - GOKAPI_USERNAME=${gokapi_username}
       - GOKAPI_PASSWORD=${gokapi_password}
@@ -21,7 +22,6 @@ services:
     volumes:
       - ./gokapi/conf:/app/config
       - ./gokapi/data:/app/data
-    restart: unless-stopped
     networks:
      - nginx-proxy-manager_ntwk
      - internal
