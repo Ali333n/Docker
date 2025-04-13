@@ -5,7 +5,7 @@ services:
     image: favonia/cloudflare-ddns:latest
     network_mode: host
     # This bypasses network isolation and makes IPv6 easier (optional; see below)
-    restart: always
+    restart: unless-stopped
     # Restart the updater after reboot
     user: "1000:1000"
     read_only: true
@@ -17,10 +17,10 @@ services:
     environment:
       - CLOUDFLARE_API_TOKEN= ${CF_API_Token}
         # Your Cloudflare API token
-      - DOMAINS=example.org
+      - DOMAINS=${CLOUDFLARE_DOMAINS}
         # Your domains (separated by commas)
       - PROXIED=false
         # Tell Cloudflare to cache webpages and hide your IP (optional)
-      - IP6_PROVIDER=none
+      - IP6_PROVIDER=${IPv6_PROVIDER}
         # Disable IPv6
       
