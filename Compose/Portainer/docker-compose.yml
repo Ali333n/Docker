@@ -6,7 +6,7 @@ services:
     container_name: portainer
     restart: unless-stopped
     environment:
-      - VIRTUAL_HOST=portainer.domain.com
+      - VIRTUAL_HOST=portainer.${DOMAIN}
       - VIRTUAL_PORT=9000
     ports:
       - "8000:8000"

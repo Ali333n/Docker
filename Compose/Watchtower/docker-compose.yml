@@ -4,8 +4,8 @@ services:
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
-    hostname: 
     restart: always
+    hostname: ${HOSTNAME}
     environment:
       - TZ=Europe/Berlin
       - WATCHTOWER_CLEANUP=true
