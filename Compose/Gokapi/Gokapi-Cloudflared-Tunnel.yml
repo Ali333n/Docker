@@ -22,6 +22,9 @@ services:
       - ./gokapi/conf:/app/config
       - ./gokapi/data:/app/data
     restart: unless-stopped
+    networks:
+     - nginx-proxy-manager_ntwk
+     - internal
 
   tunnel:
     container_name: Gokapi-Cloudflared-Tunnel
@@ -30,7 +33,12 @@ services:
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${tunnel_token}
+    networks:
+     - internal
 
 networks:
-  default:
-    name: Gokapi
+  nginx-proxy-manager_ntwk:
+    external: true
+
+  internal:
+    driver: bridge
