@@ -20,8 +20,8 @@ services:
       - GOKAPI_LOCALHOST=no
       - GOKAPI_USE_SSL=no
     volumes:
-      - ./gokapi/conf:/app/config
-      - ./gokapi/data:/app/data
+      - ./conf:/app/config
+      - ./data:/app/data
     networks:
      - nginx-proxy-manager_ntwk
      - internal
