@@ -2,21 +2,28 @@
 
 services:
   mysql:
-    restart: unless-stopped
     image: mysql:8.0
+    restart: unless-stopped
     hostname: mysql
-    volumes:
-      - ./semaphore/mysql:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: ${DB_Name}
       MYSQL_USER: ${DB_User}
       MYSQL_PASSWORD: ${DB_Pass}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$DB_USER -p $$DB_PASS
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
   semaphore:
+    image: semaphoreui/semaphore:latest
     restart: unless-stopped
     ports:
       - 3000:3000
-    image: semaphoreui/semaphore:latest
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: ${DB_Pass}
@@ -34,9 +41,11 @@ services:
       SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}              # head -c32 /dev/urandom | base64
       TZ: Europe/Berlin
     volumes:
-      - ./semaphore/data:/var/lib/semaphore
-      - ./semaphore/config:/etc/semaphore
-      - ./semaphore/temp:/tmp/semaphore
+      - ./data:/var/lib/semaphore
+      - ./config:/etc/semaphore
+      - ./temp:/tmp/semaphore
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+        restart: true
 
