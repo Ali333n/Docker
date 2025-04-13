@@ -17,12 +17,12 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
     network:
-      - nginx-proxy-manager
+      - ntwk
     healthcheck:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
       timeout: 3s
 
 networks:
-  nginx-proxy-manager:
+  ntwk:
     driver: bridge
