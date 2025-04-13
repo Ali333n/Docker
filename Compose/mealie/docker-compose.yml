@@ -18,7 +18,7 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: Europe/Berlin
-      BASE_URL: https://mealie.shplab.de
+      BASE_URL: https://${DOMAIN}
     networks:
       - nginx-proxy-manager_ntwk
 
