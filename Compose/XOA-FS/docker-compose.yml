@@ -3,10 +3,10 @@
 
 services:
     xen-orchestra:
-        restart: unless-stopped
         image: ronivay/xen-orchestra:latest
+        restart: unless-stopped
         container_name: xen-orchestra
-        stop_grace_period: 1m
+        stop_grace_period: 2m
         ports:
             - "80:80"
             #- "443:443"
@@ -28,8 +28,8 @@ services:
         security_opt:
           - apparmor:unconfined
         volumes:
-          - xo-data:/var/lib/xo-server
-          - redis-data:/var/lib/redis
+          - ./xo-data:/var/lib/xo-server
+          - ./redis-data:/var/lib/redis
           # mount certificate files to container if HTTPS is set with cert/key paths
           #- /path/to/cert.pem:/cert.pem
           #- /path/to/cert.key:/cert.key
@@ -48,6 +48,3 @@ services:
           - ./dev/loop-control:/dev/loop-control
           - ./dev/loop0:/dev/loop0
 
-volumes:
-  xo-data:
-  redis-data:
