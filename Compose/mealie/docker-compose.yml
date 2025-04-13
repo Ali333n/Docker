@@ -1,0 +1,27 @@
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest 
+    container_name: mealie
+    restart: unless-stopped
+    expose:
+        - "9000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.90'
+          memory: 1G
+    volumes:
+      - ./mealie-data:/app/data/
+    environment:
+      # Set Backend ENV Variables Here
+      ALLOW_SIGNUP: "true"
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+      BASE_URL: https://mealie.shplab.de
+    networks:
+      - nginx-proxy-manager_ntwk
+
+networks:
+  nginx-proxy-manager_ntwk:
+    external: true
