@@ -27,8 +27,8 @@ services:
      - internal
 
   tunnel:
-    container_name: Gokapi-Cloudflared-Tunnel
     image: cloudflare/cloudflared:latest
+    container_name: Gokapi-Cloudflared-Tunnel
     restart: unless-stopped
     command: tunnel run
     environment:

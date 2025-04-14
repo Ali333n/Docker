@@ -10,8 +10,8 @@ services:
         - internal
 
     tunnel:
-      container_name: IT-Tools-Cloudflared-Tunnel
       image: cloudflare/cloudflared:latest
+      container_name: IT-Tools-Cloudflared-Tunnel
       restart: unless-stopped
       command: tunnel run
       environment:
