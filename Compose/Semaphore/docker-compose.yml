@@ -39,6 +39,7 @@ services:
       SEMAPHORE_COOKIE_HASH: ${Cookie_Hash}                       # head -c32 /dev/urandom | base64
       SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption}           # head -c32 /dev/urandom | base64
       SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}              # head -c32 /dev/urandom | base64
+      SEMAPHORE_SCHEDULE_TIMEZONE: Europe/Berlin
       TZ: Europe/Berlin
     volumes:
       - ./data:/var/lib/semaphore
