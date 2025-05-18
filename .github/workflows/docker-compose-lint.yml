@@ -24,7 +24,7 @@ jobs:
           node-version: 'lts/*'
 
       - name: Install DCLint (latest)
-        run: npm install -g @zavoloklom/docker-compose-linter
+        run: npm install --g dclint
 
       - name: Run DCLint on Compose files
         run: |
