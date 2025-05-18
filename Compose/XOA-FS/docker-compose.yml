@@ -30,9 +30,7 @@ services:
       - '80:80'
       #- "443:443"
     restart: unless-stopped
-    logging:
-      # logging
-      &default_logging
+    logging: &default_logging
       driver: "json-file"
       options:
         max-size: "1M"
