@@ -20,10 +20,10 @@ services:
     networks:
       - nginx-proxy-manager_ntwk
       - internal
-    expose:
-      - "3000"
     restart: unless-stopped
     user: "1000:1000"
+    expose:
+      - '3000'
 
   influxdb:
     image: influxdb:latest
@@ -41,17 +41,20 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMIN_TOKEN}
       - DOCKER_INFLUXDB_INIT_RETENTION=${INFLUXDB_RETENTION}
     ports:
-      - "8086:8086"
+      - '8086:8086'
 
     networks:
       - nginx-proxy-manager_ntwk
       - internal
     restart: unless-stopped
     healthcheck:
-      test: [
-        "CMD-SHELL",
-        "curl -s -o /dev/null -w '%{http_code}' -u $${INFLUXDB_ADMIN_USER}:$${INFLUXDB_ADMIN_PASSWORD} http://localhost:8086/ping | grep -q '204'"
-      ]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -o /dev/null -w '%{http_code}' -u
+            $${INFLUXDB_ADMIN_USER}:$${INFLUXDB_ADMIN_PASSWORD}
+            http://localhost:8086/ping | grep -q '204'"
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
