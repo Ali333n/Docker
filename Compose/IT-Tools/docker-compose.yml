@@ -3,25 +3,25 @@
 name: it-tools-stack
 
 services:
-    it-tools:
-      image: corentinth/it-tools:latest 
-      container_name: IT-Tools-Cloudflared
-      restart: unless-stopped
-      expose:
-        - "80"
-      networks:
-        - nginx-proxy-manager_ntwk
-        - internal
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: IT-Tools-Cloudflared
+    networks:
+      - nginx-proxy-manager_ntwk
+      - internal
+    restart: unless-stopped
+    expose:
+      - '80'
 
-    tunnel:
-      image: cloudflare/cloudflared:latest
-      container_name: IT-Tools-Cloudflared-Tunnel
-      restart: unless-stopped
-      command: tunnel run
-      environment:
-        - TUNNEL_TOKEN=${tunnel_token}
-      networks:
-        - internal
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: IT-Tools-Cloudflared-Tunnel
+    environment:
+      - TUNNEL_TOKEN=${tunnel_token}
+    networks:
+      - internal
+    command: tunnel run
+    restart: unless-stopped
 
 networks:
   nginx-proxy-manager_ntwk:
