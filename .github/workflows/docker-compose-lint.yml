@@ -28,4 +28,8 @@ jobs:
 
       - name: Run DCLint on Compose files
         run: |
-          find Compose -type f -name "docker-compose*.yml" -print0 | xargs -0 -n1 dclint --no-autofix --ignore service-image-require-explicit-tag
+          for file in $(find Compose -type f -name "docker-compose*.yml"); do
+            echo "Linting $file"
+            dclint "$file" --no-autofix --ignore service-image-require-explicit-tag
+          done
+
