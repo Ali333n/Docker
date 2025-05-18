@@ -23,7 +23,7 @@ services:
     image: semaphoreui/semaphore:latest
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - '3000:3000'
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: ${DB_Pass}

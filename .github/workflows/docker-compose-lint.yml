@@ -29,7 +29,7 @@ jobs:
       - name: Run DCLint on all Compose files
         run: |
           find Compose -type f -name "docker-compose.yml" | while read -r file; do
-            if [[ "$file" == *"Unifi-Poller"* ]]; then
+            if [[ "$file" == *"Semaphore"* ]]; then
               echo "Linting and Auto-Fixing $file"
               dclint "$file" --fix
             else
@@ -47,7 +47,7 @@ jobs:
           if git diff --quiet; then
             echo "No changes to commit"
           else
-            git add Compose/Unifi-Poller/docker-compose.yml
+            git add Compose/Semaphore/docker-compose.yml
             git commit -m "chore: auto-fix docker-compose.yml via DCLint"
             git push origin HEAD:${{ github.ref_name }}
           fi
