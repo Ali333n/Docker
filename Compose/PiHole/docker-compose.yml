@@ -1,5 +1,8 @@
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 # https://gist.github.com/kaczmar2/027fd6f64f4e4e7ebbb0c75cb3409787
+
+name: pihole-project
+
 services:
   pihole:
     image: pihole/pihole:latest

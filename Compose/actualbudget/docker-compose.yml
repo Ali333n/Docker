@@ -1,4 +1,7 @@
 # https://actualbudget.org/docs/install/docker/
+
+name: actualbudget-project
+
 services:
   budget:
     image: docker.io/actualbudget/actual-server:latest

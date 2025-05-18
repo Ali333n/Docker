@@ -1,6 +1,8 @@
 # https://github.com/ronivay/XenOrchestraInstallerUpdater
 # https://hub.docker.com/r/ronivay/xen-orchestra
 
+name: xoa-project
+
 services:
   xen-orchestra:
     image: ronivay/xen-orchestra:latest

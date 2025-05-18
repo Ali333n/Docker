@@ -1,5 +1,7 @@
 # https://docs.portainer.io/start/install-ce/server/docker/linux
 
+name: portainer-project
+
 services:
   portainer:
     image: portainer/portainer-ce:lts

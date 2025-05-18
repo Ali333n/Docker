@@ -1,5 +1,7 @@
 # https://containrrr.dev/watchtower/
 
+name: watchtower-project
+
 services:
   watchtower:
     image: containrrr/watchtower

@@ -1,6 +1,8 @@
 # https://nginxproxymanager.com/setup/
 # https://docker-compose.de/en/proxy/nginx-proxy-manager/
 
+name: nginx-proxy-manager-project
+
 services:
   app:
     image: jc21/nginx-proxy-manager:latest
