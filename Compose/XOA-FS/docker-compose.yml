@@ -29,8 +29,7 @@ services:
     ports:
       - '80:80'
       #- "443:443"
-    restart: unless-stopped
-      # logging
+    restart: unless-stopped # logging
     logging: &default_logging
       driver: "json-file"
       options:
