@@ -6,21 +6,21 @@ name: nginx-proxy-manager-project
 services:
   app:
     image: jc21/nginx-proxy-manager:latest
-    restart: unless-stopped
     container_name: nginx-proxy-manager
-    ports:
-      - "80:80"
-      - "443:443"
-      - "81:81"
-    environment:
-      DISABLE_IPV6: true
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+    environment:
+      DISABLE_IPV6: true
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
     networks:
       - ntwk
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "/usr/bin/check-health"]
+      test: [ "CMD", "/usr/bin/check-health" ]
       interval: 10s
       timeout: 3s
 
