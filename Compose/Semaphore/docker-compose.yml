@@ -3,27 +3,32 @@
 services:
   mysql:
     image: mysql:8.0
-    restart: unless-stopped
-    hostname: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: ${DB_Name}
       MYSQL_USER: ${DB_User}
       MYSQL_PASSWORD: ${DB_Pass}
-    volumes:
-      - ./mysql:/var/lib/mysql
+    restart: unless-stopped
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$DB_USER -p $$DB_PASS
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 5s
+    hostname: mysql
 
   semaphore:
     image: semaphoreui/semaphore:latest
-    restart: unless-stopped
-    ports:
-      - '3000:3000'
+    depends_on:
+      mysql:
+        condition: service_healthy
+        restart: true
+    volumes:
+      - ./data:/var/lib/semaphore
+      - ./config:/etc/semaphore
+      - ./temp:/tmp/semaphore
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: ${DB_Pass}
@@ -36,17 +41,11 @@ services:
       SEMAPHORE_ADMIN_NAME: ${Admin_Name}
       SEMAPHORE_ADMIN_EMAIL: ${Admin_Mail}
       SEMAPHORE_ADMIN: §{Admin_Name}
-      SEMAPHORE_COOKIE_HASH: ${Cookie_Hash}                       # head -c32 /dev/urandom | base64
-      SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption}           # head -c32 /dev/urandom | base64
-      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key}              # head -c32 /dev/urandom | base64
+      SEMAPHORE_COOKIE_HASH: ${Cookie_Hash} # head -c32 /dev/urandom | base64
+      SEMAPHORE_COOKIE_ENCRYPTION: ${Cookie_Encryption} # head -c32 /dev/urandom | base64
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${Access_Key} # head -c32 /dev/urandom | base64
       SEMAPHORE_SCHEDULE_TIMEZONE: Europe/Berlin
       TZ: Europe/Berlin
-    volumes:
-      - ./data:/var/lib/semaphore
-      - ./config:/etc/semaphore
-      - ./temp:/tmp/semaphore
-    depends_on:
-      mysql:
-        condition: service_healthy
-        restart: true
-
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
