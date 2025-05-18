@@ -26,10 +26,11 @@ jobs:
       - name: Install DCLint (latest)
         run: npm install --g dclint
 
-      - name: Run DCLint on Compose files
+      - name: Run DCLint with Auto-Fix on Compose files
         run: |
           for file in $(find Compose -type f -name "docker-compose*.yml"); do
-            echo "Linting $file"
-            dclint "$file" --no-autofix --ignore service-image-require-explicit-tag
+            echo "Linting and Auto-Fixing $file"
+            dclint "$file" --fix --ignore "service-image-require-explicit-tag"
           done
+
 
