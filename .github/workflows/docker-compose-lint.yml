@@ -29,5 +29,12 @@ jobs:
       - name: Run DCLint on all Compose files
         run: |
           find Compose -type f -name "docker-compose.yml" | while read -r file; do
-            dclint "$file" --no-autofix
+            if [[ "$file" == "Compose/Unifi-Poller/docker-compose.yml" ]]; then
+              echo "Linting and Auto-Fixing $file"
+              dclint "$file" --fix
+            else
+              echo "Linting $file (no auto-fix)"
+              dclint "$file" --no-autofix
+            fi
           done
+
