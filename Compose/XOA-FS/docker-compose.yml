@@ -15,7 +15,6 @@ services:
       #- /path/to/cert.key:/cert.key
       # mount your custom CA to container if host certificates are issued by it and you want XO to trust it
       #- /path/to/ca.pem:/host-ca.pem
-      # logging
     environment:
       - HTTP_PORT=80
       #- HTTPS_PORT=443
@@ -31,6 +30,7 @@ services:
       - '80:80'
       #- "443:443"
     restart: unless-stopped
+      # logging
     logging: &default_logging
       driver: "json-file"
       options:
