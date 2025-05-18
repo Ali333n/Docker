@@ -30,7 +30,7 @@ jobs:
         run: |
           for file in $(find Compose -type f -name "docker-compose*.yml"); do
             echo "Linting and Auto-Fixing $file"
-            dclint "$file" --fix --ignore "service-image-require-explicit-tag"
+            dclint "$file" --fix --ignore DCL020
           done
 
 
