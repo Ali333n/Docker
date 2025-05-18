@@ -45,7 +45,7 @@ jobs:
             echo "Auto-Fixing $file for project $PROJECT_NAME"
 
             git add "$file"
-            git commit -m "chore($PROJECT_NAME): auto-fix docker-compose.yml via DCLint"
+            git commit -m "chore - $PROJECT_NAME: auto-fix docker-compose.yml via DCLint"
             git push origin HEAD:${{ github.ref_name }}
           done
         env:
