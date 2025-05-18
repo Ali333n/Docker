@@ -8,9 +8,9 @@ services:
   gokapi:
     image: f0rc3/gokapi:latest
     container_name: Gokapi-Cloudflared
-    restart: unless-stopped
-    expose:
-     - '53842'
+    volumes:
+      - ./conf:/app/config
+      - ./data:/app/data
     environment:
       - GOKAPI_USERNAME=${gokapi_username}
       - GOKAPI_PASSWORD=${gokapi_password}
@@ -19,22 +19,22 @@ services:
       - GOKAPI_REDIRECT_URL=https://github.com/Ali333n
       - GOKAPI_LOCALHOST=no
       - GOKAPI_USE_SSL=no
-    volumes:
-      - ./conf:/app/config
-      - ./data:/app/data
     networks:
-     - nginx-proxy-manager_ntwk
-     - internal
+      - nginx-proxy-manager_ntwk
+      - internal
+    restart: unless-stopped
+    expose:
+      - '53842'
 
   tunnel:
     image: cloudflare/cloudflared:latest
     container_name: Gokapi-Cloudflared-Tunnel
-    restart: unless-stopped
-    command: tunnel run
     environment:
       - TUNNEL_TOKEN=${tunnel_token}
     networks:
-     - internal
+      - internal
+    command: tunnel run
+    restart: unless-stopped
 
 networks:
   nginx-proxy-manager_ntwk:
