@@ -1,0 +1,31 @@
+# .github/workflows/docker-compose-lint.yml
+name: Docker Compose Lint
+
+on:
+  push:
+    paths:
+      - 'Compose/**'
+  pull_request:
+    paths:
+      - 'Compose/**'
+
+jobs:
+  lint:
+    name: Docker Compose Lint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up latest Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install DCLint (latest)
+        run: npm install -g @zavoloklom/docker-compose-linter
+
+      - name: Run DCLint on Compose files
+        run: |
+          find Compose -type f -name "docker-compose*.yml" -print0 | xargs -0 -n1 dclint --no-autofix
