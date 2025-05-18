@@ -26,26 +26,9 @@ jobs:
       - name: Install DCLint (latest)
         run: npm install --global dclint
 
-      - name: Run DCLint on changed Compose files (Push)
-        if: github.event_name == 'push'
-        run: |
-          git fetch --no-tags origin ${{ github.ref }}
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep '^Compose/docker-compose.*\.yml$' || true)
-
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "No Compose files changed. Skipping lint."
-            exit 0
-          fi
-
-          for file in $CHANGED_FILES; do
-            echo "Linting $file"
-            dclint "$file" --fix
-          done
-
-      - name: Run DCLint on all Compose files (PR)
-        if: github.event_name == 'pull_request'
+      - name: Run DCLint on all Compose files
         run: |
           find Compose -type f -name "docker-compose*.yml" | while read -r file; do
             echo "Linting $file"
-            dclint "$file" --fix
+            dclint "$file" --no-autofix
           done
