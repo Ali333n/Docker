@@ -1,4 +1,3 @@
-# .github/workflows/docker-compose-lint.yml
 name: Docker Compose Lint
 
 on:
@@ -26,7 +25,7 @@ jobs:
       - name: Install DCLint (latest)
         run: npm install --global dclint
 
-      - name: Run DCLint on all Compose files
+      - name: Run DCLint with Auto-Fix on Compose files
         run: |
           find Compose -type f -name "docker-compose.yml" | while read -r file; do
             echo "Linting and Auto-Fixing $file"
@@ -39,7 +38,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Automatisch alle geänderten docker-compose.yml Dateien committen und pushen
           CHANGED_FILES=$(git diff --name-only | grep '^Compose/.*docker-compose.yml$' || true)
 
           for file in $CHANGED_FILES; do
@@ -48,12 +46,7 @@ jobs:
 
             git add "$file"
             git commit -m "chore($PROJECT_NAME): auto-fix docker-compose.yml via DCLint"
-          done
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
             git push origin HEAD:${{ github.ref_name }}
-          fi
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
