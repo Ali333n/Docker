@@ -1,3 +1,5 @@
+name: mealie-project
+
 services:
   mealie:
     image: ghcr.io/mealie-recipes/mealie:latest
@@ -5,7 +7,6 @@ services:
     volumes:
       - ./mealie-data:/app/data/
     environment:
-      # Set Backend ENV Variables Here
       ALLOW_SIGNUP: "true"
       PUID: 1000
       PGID: 1000
