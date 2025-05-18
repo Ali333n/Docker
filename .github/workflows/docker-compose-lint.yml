@@ -29,7 +29,7 @@ jobs:
       - name: Run DCLint on all Compose files
         run: |
           find Compose -type f -name "docker-compose.yml" | while read -r file; do
-            if [[ "$file" == "Compose/Unifi-Poller/*" ]]; then
+            if [[ "$file" == *"Unifi-Poller"* ]]; then
               echo "Linting and Auto-Fixing $file"
               dclint "$file" --fix
             else
@@ -37,4 +37,3 @@ jobs:
               dclint "$file" --no-autofix
             fi
           done
-
