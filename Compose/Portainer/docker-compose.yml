@@ -6,21 +6,22 @@ services:
   portainer:
     image: portainer/portainer-ce:lts
     container_name: portainer
-    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
     environment:
       - VIRTUAL_HOST=portainer.${DOMAIN}
       - VIRTUAL_PORT=9000
     ports:
-      - "8000:8000"
+      - '8000:8000'
+    restart: unless-stopped
     expose:
-      - "9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - data:/data
+      - '9000'
+networks:
+  nginx-proxy-manager_ntwk:
+    external: true
 
 volumes:
   data:
 
-networks:
-  nginx-proxy-manager_ntwk:
-    external: true
+
