@@ -7,7 +7,7 @@ services:
     # This bypasses network isolation and makes IPv6 easier (optional; see below)
     restart: unless-stopped
     # Restart the updater after reboot
-    user: "1000:1000"
+    user: '1000:1000'
     read_only: true
     # Make the container filesystem read-only (optional but recommended)
     cap_drop: [all]

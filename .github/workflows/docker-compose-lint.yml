@@ -29,13 +29,8 @@ jobs:
       - name: Run DCLint on all Compose files
         run: |
           find Compose -type f -name "docker-compose.yml" | while read -r file; do
-            if [[ "$file" == *"Gokapi"* ]]; then
-              echo "Linting and Auto-Fixing $file"
-              dclint "$file" --fix
-            else
-              echo "Linting $file (no auto-fix)"
-              dclint "$file" --no-autofix
-            fi
+            echo "Linting and Auto-Fixing $file"
+            dclint "$file" --fix
           done
 
       - name: Commit and push changes if DCLint fixed files
@@ -44,11 +39,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet; then
+          # Automatisch alle geänderten docker-compose.yml Dateien committen und pushen
+          CHANGED_FILES=$(git diff --name-only | grep '^Compose/.*docker-compose.yml$' || true)
+
+          for file in $CHANGED_FILES; do
+            PROJECT_NAME=$(echo "$file" | awk -F'/' '{print $2}')
+            echo "Auto-Fixing $file for project $PROJECT_NAME"
+
+            git add "$file"
+            git commit -m "chore($PROJECT_NAME): auto-fix docker-compose.yml via DCLint"
+          done
+
+          if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git add Compose/Gokapi/docker-compose.yml
-            git commit -m "chore: auto-fix docker-compose.yml via DCLint"
             git push origin HEAD:${{ github.ref_name }}
           fi
         env:
