@@ -41,7 +41,7 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMIN_TOKEN}
       - DOCKER_INFLUXDB_INIT_RETENTION=${INFLUXDB_RETENTION}
     ports:
-      - 8086:8086
+      - "8086:8086"
 
     networks:
       - nginx-proxy-manager_ntwk
