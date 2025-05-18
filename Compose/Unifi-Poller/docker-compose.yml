@@ -3,12 +3,30 @@
 # https://unpoller.com/docs/install/grafana/
 # https://unpoller.com/docs/install/controllerlogin/
 
+name: unifi-poller-stack
+
 services:
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,natel-discrete-panel,grafana-piechart-panel
+    networks:
+      - nginx-proxy-manager_ntwk
+      - internal
+    user: "1000:1000"
+    expose:
+      - "3000"
+    restart: unless-stopped
+
   influxdb:
     image: influxdb:latest
-    restart: unless-stopped
-    ports:
-      - "8086:8086"
     volumes:
       - ./influxdb-storage:/var/lib/influxdb2
       - ./influxdb-config:/etc/influxdb2
@@ -22,6 +40,12 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMIN_TOKEN}
       - DOCKER_INFLUXDB_INIT_RETENTION=${INFLUXDB_RETENTION}
+    ports:
+      - "8086:8086"
+    networks:
+      - nginx-proxy-manager_ntwk
+      - internal
+    restart: unless-stopped
     healthcheck:
       test: [
         "CMD-SHELL",
@@ -31,37 +55,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      - nginx-proxy-manager_ntwk
-      - internal
-
-  grafana:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    expose:
-      - "3000"
-    volumes:
-      - ./grafana-storage:/var/lib/grafana
-    user: "1000:1000"
-    depends_on:
-      influxdb:
-        condition: service_healthy
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,natel-discrete-panel,grafana-piechart-panel
-    networks:
-      - nginx-proxy-manager_ntwk
-      - internal
 
   unpoller:
     image: ghcr.io/unpoller/unpoller:latest
-    restart: unless-stopped
     depends_on:
-      influxdb:
-        condition: service_healthy
       grafana:
         condition: service_started
+      influxdb:
+        condition: service_healthy
     environment:
       - UP_INFLUXDB_DB=${INFLUXDB_DB}
       - UP_INFLUXDB_USER=${INFLUXDB_ADMIN_USER}
@@ -76,7 +77,8 @@ services:
       - UP_POLLER_DEBUG=${POLLER_DEBUG}
       - UP_UNIFI_DEFAULT_SAVE_DPI=${POLLER_SAVE_DPI}
     networks:
-      - internal # This service only communicates with other internal services (e.g., InfluxDB, Grafana) and does not require external access.
+      - internal
+    restart: unless-stopped
 
 networks:
   nginx-proxy-manager_ntwk:
