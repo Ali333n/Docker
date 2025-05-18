@@ -1,0 +1,2 @@
+rules:
+  service-image-require-explicit-tag: false
