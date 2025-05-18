@@ -5,24 +5,19 @@ name: cloudflare-ddns-project
 services:
   cloudflare-ddns:
     image: favonia/cloudflare-ddns:latest
+    # Another protection to restrict superuser privileges (optional but recommended)
+    environment:
+      - CLOUDFLARE_API_TOKEN= ${CF_API_Token} # Your Cloudflare API token
+      - DOMAINS=${CLOUDFLARE_DOMAINS} # Your domains (separated by commas)
+      - PROXIED=false # Tell Cloudflare to cache webpages and hide your IP (optional)
+      - IP6_PROVIDER=${IPv6_PROVIDER} # Disable IPv6
     network_mode: host
     # This bypasses network isolation and makes IPv6 easier (optional; see below)
     restart: unless-stopped
     # Restart the updater after reboot
     user: '1000:1000'
-    read_only: true
     # Make the container filesystem read-only (optional but recommended)
-    cap_drop: [all]
+    cap_drop: [ all ]
+    read_only: true
     # Drop all Linux capabilities (optional but recommended)
-    security_opt: [no-new-privileges:true]
-    # Another protection to restrict superuser privileges (optional but recommended)
-    environment:
-      - CLOUDFLARE_API_TOKEN= ${CF_API_Token}
-        # Your Cloudflare API token
-      - DOMAINS=${CLOUDFLARE_DOMAINS}
-        # Your domains (separated by commas)
-      - PROXIED=false
-        # Tell Cloudflare to cache webpages and hide your IP (optional)
-      - IP6_PROVIDER=${IPv6_PROVIDER}
-        # Disable IPv6
-      
+    security_opt: [ no-new-privileges:true ]
