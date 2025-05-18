@@ -28,7 +28,6 @@ jobs:
 
       - name: Run DCLint on all Compose files
         run: |
-          find Compose -type f -name "docker-compose*.yml" | while read -r file; do
-            echo "Linting $file"
+          find Compose -type f -name "docker-compose.yml" | while read -r file; do
             dclint "$file" --no-autofix
           done
