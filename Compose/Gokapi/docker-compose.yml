@@ -4,8 +4,6 @@
 # https://one.dash.cloudflare.com/ > Login > Access > Tunnels > "Create Tunnel" > get "--token" == mytokengoeshere
 # Once this is done, Cloudflare automaticly configures the CNAME linked with the proxied Tunnel
 
-name: gokapi-stack
-
 services:
   gokapi:
     image: f0rc3/gokapi:latest

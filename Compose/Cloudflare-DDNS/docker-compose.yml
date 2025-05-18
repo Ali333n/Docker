@@ -1,7 +1,5 @@
 # https://github.com/favonia/cloudflare-ddns
 
-name: cloudflare-ddns-project
-
 services:
   cloudflare-ddns:
     image: favonia/cloudflare-ddns:latest

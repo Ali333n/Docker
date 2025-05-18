@@ -1,7 +1,5 @@
 # https://github.com/CorentinTh/it-tools
 
-name: it-tools-stack
-
 services:
   it-tools:
     image: corentinth/it-tools:latest

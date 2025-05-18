@@ -1,7 +1,5 @@
 # https://docs.semaphoreui.com/administration-guide/installation/docker/
 
-name: semaphore-stack
-
 services:
   mysql:
     image: mysql:8.0
