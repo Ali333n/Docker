@@ -46,13 +46,7 @@ services:
       - internal
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -s -o /dev/null -w '%{http_code}' -u
-            $${INFLUXDB_ADMIN_USER}:$${INFLUXDB_ADMIN_PASSWORD}
-            http://localhost:8086/ping | grep -q '204'"
-        ]
+      test: [ "CMD-SHELL", "curl -s -o /dev/null -w '%{http_code}' -u $${INFLUXDB_ADMIN_USER}:$${INFLUXDB_ADMIN_PASSWORD} http://localhost:8086/ping | grep -q '204'" ]
       interval: 10s
       timeout: 5s
       retries: 5
