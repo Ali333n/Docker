@@ -24,7 +24,7 @@ services:
       - internal
     restart: unless-stopped
     expose:
-      - 53842
+      - '53842'
 
   tunnel:
     image: cloudflare/cloudflared:latest
