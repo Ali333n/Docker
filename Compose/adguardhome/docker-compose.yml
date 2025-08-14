@@ -1,0 +1,35 @@
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome
+    restart: unless-stopped
+    volumes:
+      - ./work:/opt/adguardhome/work
+      - ./conf:/opt/adguardhome/conf
+    ports:
+      - "53:53/tcp"     # DNS (TCP)
+      - "53:53/udp"     # DNS (UDP)
+      - "67:67/udp"     # DHCP server (IPv4)
+      - "68:68/udp"     # DHCP client (IPv4)
+      - "80:80/tcp"     # HTTP admin UI (after setup)
+      - "443:443/tcp"   # HTTPS admin UI and DNS-over-HTTPS (DoH)
+      - "443:443/udp"   # HTTPS/HTTP/3 (QUIC) for UI and DoH over HTTP/3
+      - "3000:3000/tcp" # Initial setup UI
+      - "853:853/tcp"   # DNS-over-TLS (DoT)
+      - "784:784/udp"   # DNS-over-QUIC (DoQ)
+      - "853:853/udp"   # DNS-over-QUIC (DoQ) alt port
+      - "8853:8853/udp" # DNS-over-QUIC (DoQ) alt port
+      - "5443:5443/tcp" # DNSCrypt (TCP)
+      - "5443:5443/udp" # DNSCrypt (UDP)
+    networks:
+      - adguard_net
+
+networks:
+  adguard_net:
+    driver: bridge
+    enable_ipv6: true
+    # Optional: define a fixed IPv6 subnet for stable addressing
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: "fd00:adgh::/64"
