@@ -13,5 +13,6 @@ services:
       - WATCHTOWER_POLL_INTERVAL=3600 #Set Poll Interval
       - WATCHTOWER_NOTIFICATION_URL= ${webhook_url} #discord Webhook URL
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
+      - DOCKER_API_VERSION=1.52 # Has to be used in latest Docker versions cause of compatibility issues
     restart: always
     hostname: ${HOSTNAME}
