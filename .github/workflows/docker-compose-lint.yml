@@ -8,6 +8,9 @@ on:
     paths:
       - 'Compose/**'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   lint:
     name: Docker Compose Lint Check
